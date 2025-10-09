@@ -2,6 +2,8 @@ from cryptography.fernet import Fernet
 
 class passwordManager:
 
+#inspired from https://www.youtube.com/watch?v=O8596GPSJV4&t=1s
+
     def __init__(self):
         self.key = None
         self.password_file = None
