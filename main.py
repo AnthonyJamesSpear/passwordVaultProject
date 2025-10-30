@@ -86,7 +86,7 @@ def main():
         elif choice == "6":
             site = input("What site do you want: ")
             print(f"Password for {site} is {pm.get_password(site)}")
-        elif choice == "q":
+        elif choice == "7":
             done = True
             print("Bye")
         else:
