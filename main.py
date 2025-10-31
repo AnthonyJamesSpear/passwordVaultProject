@@ -41,10 +41,9 @@ class passwordManager:
                 f.write(site + ":" + encrypted.decode() + "\n")
 
     def get_password(self, site):
-        return self.password_dict[site]
+        return self.password_dict.get(site)
     
 def main():
-    # The hard-coded 'password' dictionary has been removed.
     
     pm = passwordManager()
 
