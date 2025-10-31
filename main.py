@@ -1,8 +1,7 @@
 from cryptography.fernet import Fernet
 
 class passwordManager:
-
-#inspired from https://www.youtube.com/watch?v=O8596GPSJV4&t=1s
+    # inspired from https://www.youtube.com/watch?v=O8596GPSJV4&t=1s (Video: Password Manager in Python [00:00:08])
 
     def __init__(self):
         self.key = None
@@ -45,12 +44,8 @@ class passwordManager:
         return self.password_dict[site]
     
 def main():
-    password = {
-        "facebook": "B1gPenguin12!",
-        "instagram": "L@rgeDog12@",
-        "youtube": "slyF0x12!!"
-    }
-
+    # The hard-coded 'password' dictionary has been removed.
+    
     pm = passwordManager()
 
     print("What do you want to do?\n" \
@@ -75,7 +70,8 @@ def main():
             pm.load_key(path)
         elif choice == "3":
             path = input("Enter path: ")
-            pm.create_password_file(path, password)
+            # Now, calling without initial_values
+            pm.create_password_file(path)
         elif choice == "4":
             path = input("Enter path: ")
             pm.load_password_file(path)
@@ -94,4 +90,3 @@ def main():
                 
 if __name__ == "__main__":
     main()
-
