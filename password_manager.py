@@ -5,6 +5,7 @@ import string
 import hashlib
 import threading
 import time
+from datetime import datetime
 from typing import Dict
 from cryptography.fernet import Fernet
 from password_entry import PasswordEntry
@@ -123,14 +124,32 @@ class PasswordManager:
         for row in rows:
             # Decrypt password
             decrypted_password = Fernet(self.key).decrypt(row[3].encode()).decode()
+
+            # Convert database timestamps to datetime objects
+            created_at = None
+            last_updated = None
             
+            if len(row) > 6 and row[6]:
+                try:
+                    created_at = datetime.fromisoformat(row[6].replace('Z', '+00:00'))
+                except:
+                    created_at = None
+                    
+            if len(row) > 7 and row[7]:
+                try:
+                    last_updated = datetime.fromisoformat(row[7].replace('Z', '+00:00'))
+                except:
+                    last_updated = None
+
             entry = PasswordEntry(
                 id=row[0],
                 service=row[1],
                 username=row[2],
                 password=decrypted_password,
                 strength=row[4] or "Unknown",
-                notes=row[5] or ""
+                notes=row[5] or "",
+                created_at=created_at,
+                last_updated=last_updated
             )
             self.password_dict[row[0]] = entry
 
@@ -265,7 +284,7 @@ class PasswordManager:
             password_id = cursor.lastrowid
             conn.commit()
             conn.close()
-            
+
             # Create entry and add to memory
             entry = PasswordEntry(
                 id=password_id,
@@ -273,7 +292,9 @@ class PasswordManager:
                 username=username,
                 password=password,
                 strength=strength,
-                notes=notes
+                notes=notes,
+                created_at=datetime.now(),
+                last_updated=datetime.now()
             )
             self.password_dict[password_id] = entry
             
@@ -382,6 +403,7 @@ class PasswordManager:
                 self.password_dict[password_id].password = password
                 self.password_dict[password_id].strength = strength
                 self.password_dict[password_id].notes = notes
+                self.password_dict[password_id].last_updated = datetime.now()
             
             return {
                 'success': True,

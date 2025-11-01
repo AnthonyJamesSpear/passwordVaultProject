@@ -156,7 +156,7 @@ def format_password_for_display(password_data):
         'password': password_data.get('password', ''),
         'strength': password_data.get('strength', 'Unknown'),
         'notes': password_data.get('notes', ''),
-        'last_updated': password_data.get('updated_at', ''),
+        'last_updated': password_data.get('last_updated', ''),
         'created_at': password_data.get('created_at', '')
     }
 
